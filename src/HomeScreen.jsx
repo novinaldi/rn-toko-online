@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, ImageBackground, StatusBar} from 'react-native';
 import React from 'react';
 import ListProduk from './ListProduk';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
       <StatusBar
@@ -45,7 +45,7 @@ export default function HomeScreen() {
             --- TACELAK CLOTHS ---
           </Text>
         </View>
-        <ListProduk />
+        <ListProduk navigation={navigation} />
       </View>
     </View>
   );
