@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DetailProduk from './DetailProduk';
 import Beranda from './Beranda';
+import Catalog from './Catalog';
 import { View, Text } from 'react-native';
 // import HomeScreen from './HomeScreen';
 const Stack = createNativeStackNavigator();
@@ -26,14 +27,6 @@ const navOptions = ({navigation}) => ({
 
 function HomeScreen() {
   const Tab = createMaterialBottomTabNavigator();
-  function ListContact() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Halaman Cari Produk</Text>
-      </View>
-    );
-  }
-
   function SettingsScreen() {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -59,7 +52,7 @@ function HomeScreen() {
 
       <Tab.Screen
         name="Katalog"
-        component={ListContact}
+        component={Catalog}
         options={() => ({
           tabBarLabel: 'Catalog',
           tabBarIcon: ({color}) => (
