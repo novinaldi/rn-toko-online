@@ -7,10 +7,25 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DetailProduk from './DetailProduk';
 import Beranda from './Beranda';
 import Catalog from './Catalog';
-import { View, Text } from 'react-native';
-// import HomeScreen from './HomeScreen';
+import UserData from './UserData';
+import LoginPage from './LoginPage';
+
 const Stack = createNativeStackNavigator();
 const navOptions = ({navigation}) => ({
+  headerStyle: {
+    backgroundColor: '#98EECC',
+  },
+  headerTitleStyle: {
+    color: '#000',
+  },
+  headerTitleAlign: 'center',
+  headerLeft: () => (
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+      <Icon name="arrow-left" color="black" size={20} />
+    </TouchableOpacity>
+  ),
+});
+const navOptionsLoginPage = ({navigation}) => ({
   headerStyle: {
     backgroundColor: '#98EECC',
   },
@@ -27,14 +42,6 @@ const navOptions = ({navigation}) => ({
 
 function HomeScreen() {
   const Tab = createMaterialBottomTabNavigator();
-  function SettingsScreen() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Halaman Untuk Akun</Text>
-      </View>
-    );
-  }
-
   return (
     <Tab.Navigator
       barStyle={{backgroundColor: '#98EECC'}}
@@ -66,10 +73,10 @@ function HomeScreen() {
       />
 
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="UserData"
+        component={UserData}
         options={{
-          tabBarLabel: 'Akun',
+          tabBarLabel: 'User',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
               name="account-plus"
@@ -98,6 +105,20 @@ function Nav() {
           name="DetailProduk"
           component={DetailProduk}
           options={navOptions}
+        />
+        <Stack.Screen
+          name="LoginPage"
+          component={LoginPage}
+          options={{
+            headerTitle: 'Halaman Login',
+            headerStyle: {
+              backgroundColor: '#98EECC',
+            },
+            headerTitleStyle: {
+              color: '#000',
+            },
+            headerTitleAlign: 'center',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
