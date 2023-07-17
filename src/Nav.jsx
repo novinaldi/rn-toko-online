@@ -9,6 +9,7 @@ import Beranda from './Beranda';
 import Catalog from './Catalog';
 import UserData from './UserData';
 import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
 
 const Stack = createNativeStackNavigator();
 const navOptions = ({navigation}) => ({
@@ -111,6 +112,20 @@ function Nav() {
           component={LoginPage}
           options={{
             headerTitle: 'Halaman Login',
+            headerStyle: {
+              backgroundColor: '#98EECC',
+            },
+            headerTitleStyle: {
+              color: '#000',
+            },
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name="RegisterPage"
+          component={RegisterPage}
+          options={{
+            headerTitle: 'Registrasi Akun',
             headerStyle: {
               backgroundColor: '#98EECC',
             },

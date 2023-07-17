@@ -111,7 +111,8 @@ export default function UserData({navigation}) {
         }}>
         <Text style={{color: 'white'}}>Masuk</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+        <TouchableOpacity
+          onPress={()=> navigation.navigate('RegisterPage')}
         style={{
           backgroundColor: '#1D5B79',
           marginVertical: 10,
@@ -184,16 +185,6 @@ export default function UserData({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
-      {/* <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignContent: 'space-between',
-        }}>
-        <Text>sdfadf</Text>
-        <Text>sdfadf</Text>
-      </View> */}
     </SafeAreaView>
   );
 }

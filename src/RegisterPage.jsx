@@ -5,17 +5,15 @@ import {
   ToastAndroid,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {
   PaperProvider,
   TextInput,
   Button,
   MD3LightTheme as DefaultTheme,
-  ActivityIndicator,
 } from 'react-native-paper';
 import React, {useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import API_URL from './config';
 
 const theme = {
@@ -27,51 +25,52 @@ const theme = {
   },
 };
 
-export default function LoginPage({navigation}) {
+export default function RegisterPage({navigation}) {
+  const [inputname, setInputname] = useState();
+  const [inputemail, setInputemail] = useState();
+  const [inputpassword, setInputpassword] = useState();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [email, setemail] = useState();
-  const [password, setpassword] = useState();
   const [loading, setLoading] = useState(false);
 
-  const tokenKey = async value => {
-    try {
-      return await AsyncStorage.setItem('@token_login', value);
-    } catch (error) {
-      console.log(error);
-    }
+  const kosongkanInputan = () => {
+    setInputname('');
+    setInputemail('');
+    setInputpassword('');
   };
-
-  const doLoginUser = async () => {
+  const doRegister = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email,
-          password: password,
+          name: inputname,
+          email: inputemail,
+          password: inputpassword,
         }),
       });
       const json = await response.json();
       if (json.error) {
         Alert.alert(
           'Warning',
-          'Silahkan Periksan Inputan email dan password anda !',
+          'Silahkan Periksa semua inputan, tidak boleh ada yang kosong',
         );
       } else {
-        tokenKey(json.access_token);
-        ToastAndroid.show('Login Anda Berhasil', ToastAndroid.LONG);
-        navigation.push('HomeScreen');
+        ToastAndroid.show(
+          'Registrasi Anda Berhasil, silahkan lakukan login',
+          ToastAndroid.LONG,
+        );
+        navigation.push('LoginPage');
       }
+      kosongkanInputan();
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <PaperProvider theme={theme}>
       <View style={{flex: 1, marginVertical: 10}}>
@@ -82,10 +81,9 @@ export default function LoginPage({navigation}) {
             elevation: 3,
             marginVertical: 20,
           }}
-          label="Email"
-          value={email}
-          onChangeText={value => setemail(value)}
-          left={<TextInput.Icon icon="email" color="black" />}
+          label="Name"
+          value={inputname}
+          onChangeText={value => setInputname(value)}
         />
         <TextInput
           style={{
@@ -94,9 +92,19 @@ export default function LoginPage({navigation}) {
             elevation: 3,
             marginVertical: 20,
           }}
-          value={password}
-          onChangeText={value => setpassword(value)}
-          left={<TextInput.Icon icon="lock" color="black" />}
+          label="Email"
+          value={inputemail}
+          onChangeText={value => setInputemail(value)}
+        />
+        <TextInput
+          style={{
+            backgroundColor: 'white',
+            marginHorizontal: 10,
+            elevation: 3,
+            marginVertical: 20,
+          }}
+          value={inputpassword}
+          onChangeText={value => setInputpassword(value)}
           label="Password"
           secureTextEntry={secureTextEntry}
           right={
@@ -121,21 +129,18 @@ export default function LoginPage({navigation}) {
             borderRadius: 20,
           }}
           disabled={loading ? true : false}
-          onPress={() => doLoginUser()}>
+          onPress={() => doRegister()}>
           {loading ? (
             <ActivityIndicator size={30} color="white" />
           ) : (
-            <View style={{flexDirection: 'row'}}>
-              <IconMaterial name="login" color="white" size={26} />
-              <Text
-                style={{
-                  color: '#ffffff',
-                  fontWeight: 'bold',
-                  fontSize: 20,paddingLeft:10
-                }}>
-                Login
-              </Text>
-            </View>
+            <Text
+              style={{
+                color: '#ffffff',
+                fontWeight: 'bold',
+                fontSize: 20,
+              }}>
+              Daftar
+            </Text>
           )}
         </TouchableOpacity>
       </View>
