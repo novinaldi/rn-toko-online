@@ -10,7 +10,7 @@ import Catalog from './Catalog';
 import UserData from './UserData';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
-import Keranjang,{jumlahkeranjang} from './Keranjang';
+import Keranjang from './Keranjang';
 
 const Stack = createNativeStackNavigator();
 const navOptions = ({navigation}) => ({
@@ -82,7 +82,6 @@ function HomeScreen() {
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="cart" color={color} size={26} />
           ),
-          tabBarBadge: jumlahkeranjang,
         })}
       />
 

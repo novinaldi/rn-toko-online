@@ -17,14 +17,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import API_URL from './config';
 
-export let jumlahkeranjang = 0;
-
+let jumlahkeranjang = 0;
 export default function Keranjang({navigation}) {
   const [loading, setLoading] = useState(false);
   const [errorToken, setErrorToken] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [dataCart, setDataCart] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   const getDataCart = async () => {
     let token_login = await AsyncStorage.getItem('@token_login');
@@ -43,37 +41,23 @@ export default function Keranjang({navigation}) {
       } else {
         setDataCart(json.data);
         jumlahkeranjang = json.data.length;
-        calculateTotalPrice();
       }
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const calculateTotalPrice = () => {
-    let total = 0;
-    dataCart.forEach(item => {
-      total += item.product.price * item.qty;
-    });
-    setTotalPrice(total);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getDataCart();
-      calculateTotalPrice();
-    };
-    fetchData();
-  }, []);
-
-
   useFocusEffect(
     useCallback(() => {
       getDataCart();
-      calculateTotalPrice();
     }, []),
   );
+
+  // Menghitung total price
+  let totalPrice = 0;
+  dataCart.forEach((item) => {
+    totalPrice += item.product.price * item.qty;
+  });
 
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
