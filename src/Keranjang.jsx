@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   Alert,
   FlatList,
+  Image,
 } from 'react-native';
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,14 +24,7 @@ export default function Keranjang({navigation}) {
   const [errorToken, setErrorToken] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [dataCart, setDataCart] = useState([]);
-  const [dataProduk, setdataProduk] = useState([]);
-  const [idCart, setIdCart] = useState();
-  const [useridCart, setUseridCart] = useState();
-  const [idproductCart, setIdproductCart] = useState();
-  const [qtyCart, setQtyCart] = useState();
-  const [namaproduk, setNamaproduk] = useState();
-  const [gambarProduk, setgambarProduk] = useState();
-  const [hargaproduk, sethargaproduk] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const getDataCart = async () => {
     let token_login = await AsyncStorage.getItem('@token_login');
@@ -43,43 +37,48 @@ export default function Keranjang({navigation}) {
           Authorization: 'Bearer ' + token_login,
         },
       });
-      const jsonCart = await response.json();
-      if (jsonCart.error) {
+      const json = await response.json();
+      if (json.error) {
         setErrorToken(true);
       } else {
-        setDataCart(jsonCart);
-        setdataProduk(jsonCart.product);
-        console.log(jsonCart);
-        console.log(jsonCart.product);
+        setDataCart(json.data);
+        jumlahkeranjang = json.data.length;
+        calculateTotalPrice();
       }
-      jumlahkeranjang = jsonCart.data.length;
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const calculateTotalPrice = () => {
+    let total = 0;
+    dataCart.forEach(item => {
+      total += item.product.price * item.qty;
+    });
+    setTotalPrice(total);
+  };
+
   useEffect(() => {
-    getDataCart();
+    const fetchData = async () => {
+      await getDataCart();
+      calculateTotalPrice();
+    };
+    fetchData();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      tabBarBadge: jumlahkeranjang > 0 ? jumlahkeranjang.toString() : null,
+    });
+  }, [jumlahkeranjang]);
 
   useFocusEffect(
     useCallback(() => {
       getDataCart();
+      calculateTotalPrice();
     }, []),
   );
-
-  const renderProdukItem = ({item, index}) => {
-    if (!item) {
-      return null; // Tidak melakukan render jika objek item undefined
-    }
-
-    return (
-      <View>
-        <Text>{dataCart}</Text>
-      </View>
-    );
-  };
 
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -104,7 +103,7 @@ export default function Keranjang({navigation}) {
       </TouchableOpacity>
     </View>
   ) : (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#FDFDFD'}}>
       <View
         style={{
           flex: 1 / 3,
@@ -145,32 +144,89 @@ export default function Keranjang({navigation}) {
           </Text>
         </View>
       ) : (
-        <SafeAreaView style={{flex: 3}}>
+        <View
+          style={{
+            flex: 3,
+            backgroundColor: 'white',
+          }}>
           <FlatList
             refreshControl={
               <RefreshControl
                 refreshing={refresh}
                 onRefresh={() => {
-                  setRefresh(true);
                   getDataCart();
                   setRefresh(false);
                 }}
               />
             }
+            style={{flex: 1, marginVertical: 10}}
             data={dataCart}
-            numColumns={2}
-            contentContainerStyle={styles.flatListContent}
             keyExtractor={item => item.id}
-            renderItem={renderProdukItem}
+            renderItem={({item, index}) => (
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  flex: 1,
+                  marginHorizontal: 10,
+                  elevation: 5,
+                  marginTop: 10,
+                  backgroundColor: 'white',
+                  marginVertical: 10,
+                }}>
+                <Image
+                  source={{
+                    uri: `${item.product.image}`,
+                    headers: {
+                      Pragma: 'no-cache',
+                    },
+                  }}
+                  style={styles.produkImage}
+                />
+                <View
+                  style={{flex: 1, marginHorizontal: 10, marginVertical: 3}}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                      color: 'black',
+                    }}>{`${item.product.name.substring(0, 35)} ...`}</Text>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: 'red',
+                    }}>
+                    {`Rp ${
+                      item.product.price?.toLocaleString('id-ID') || '-'
+                    } x ${item.qty}`}
+                  </Text>
+                </View>
+              </View>
+            )}
           />
-        </SafeAreaView>
+          <View
+            style={{
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+              marginHorizontal: 10,
+              marginBottom: 5,
+            }}>
+            <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black'}}>
+              Total : Rp {totalPrice?.toLocaleString('id-ID') || '-'}
+            </Text>
+          </View>
+        </View>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  flatListContent: {
-    paddingVertical: 10,
+  produkImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    marginTop: 3,
+    alignItems: 'center',
   },
 });
