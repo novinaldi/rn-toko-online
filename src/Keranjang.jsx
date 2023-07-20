@@ -10,7 +10,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -67,11 +67,6 @@ export default function Keranjang({navigation}) {
     fetchData();
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      tabBarBadge: jumlahkeranjang > 0 ? jumlahkeranjang.toString() : null,
-    });
-  }, [jumlahkeranjang]);
 
   useFocusEffect(
     useCallback(() => {
