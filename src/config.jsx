@@ -1,3 +1,3 @@
-const API_URL = 'http://10.235.192.35:8000/api';
+const API_URL = 'https://tugas-akhir-tacelak.online/laravel/public/api';
 
 export default API_URL;
