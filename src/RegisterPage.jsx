@@ -1,18 +1,5 @@
-import {
-  Text,
-  Alert,
-  StyleSheet,
-  ToastAndroid,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import {
-  PaperProvider,
-  TextInput,
-  Button,
-  MD3LightTheme as DefaultTheme,
-} from 'react-native-paper';
+import { Text, Alert, StyleSheet, ToastAndroid, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { PaperProvider, TextInput, MD3LightTheme as DefaultTheme } from 'react-native-paper';
 import React, {useState} from 'react';
 import API_URL from './config';
 

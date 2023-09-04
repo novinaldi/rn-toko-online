@@ -1,22 +1,7 @@
+import {StyleSheet, Text, ToastAndroid, View, SafeAreaView, RefreshControl, TouchableOpacity, Image, FlatList,} from 'react-native';
 import {
-  Alert,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  View,
-  SafeAreaView,
-  RefreshControl,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from 'react-native';
-import {
-  PaperProvider,
-  TextInput,
-  MD3LightTheme as DefaultTheme,
-  ActivityIndicator,
-} from 'react-native-paper';
-import React, {useState} from 'react';
+  PaperProvider, TextInput, MD3LightTheme as DefaultTheme, ActivityIndicator} from 'react-native-paper';
+import React, { useState } from 'react';
 import API_URL from './config';
 
 const theme = {
@@ -28,7 +13,7 @@ const theme = {
   },
 };
 
-export default function Catalog({navigation}) {
+export default function Catalog({ navigation }) {
   const [cariProduk, setCariProduk] = useState();
   const [loading, setLoading] = useState(false);
   const [listProduk, setListProduk] = useState([]);
@@ -61,7 +46,7 @@ export default function Catalog({navigation}) {
     }
   };
 
-  const renderProdukItem = ({item, index}) => {
+  const renderProdukItem = ({ item, index }) => {
     if (!item) {
       return null; // Tidak melakukan render jika objek item undefined
     }
@@ -100,9 +85,9 @@ export default function Catalog({navigation}) {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={{backgroundColor: theme.colors.secondary}}>
+      <View style={{ backgroundColor: theme.colors.secondary }}>
         <TextInput
-          style={{backgroundColor: 'white'}}
+          style={{ backgroundColor: 'white' }}
           label="Search Catalog..."
           value={cariProduk}
           onChangeText={value => setCariProduk(value)}
@@ -122,7 +107,7 @@ export default function Catalog({navigation}) {
             marginTop: 5,
           }}>
           {isDataEmpty ? (
-            <View style={{ justifyContent:'center',alignItems:'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text>Data tidak ditemukan</Text>
             </View>
           ) : (

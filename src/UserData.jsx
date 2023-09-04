@@ -1,12 +1,4 @@
-import {
-	StyleSheet,
-	View,
-	ActivityIndicator,
-	RefreshControl,
-	ToastAndroid,
-	TouchableOpacity,
-	Alert,
-} from 'react-native';
+import { StyleSheet, View, ActivityIndicator} from 'react-native';
 import { Divider, Text, List, Button } from 'react-native-paper';
 import React, { useState, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,12 +9,8 @@ import API_URL from './config';
 
 export default function UserData({ navigation }) {
 	const [loading, setLoading] = useState(false);
-	const [errorToken, setErrorToken] = useState(false);
-	const [refresh, setRefresh] = useState(false);
-	const [iduser, setiduser] = useState();
 	const [nameuser, setnameuser] = useState();
 	const [emailuser, setemailuser] = useState();
-	const [roleuser, setroleuser] = useState();
 
 	const getUserDataLogin = async () => {
 		let token_login = await AsyncStorage.getItem('@token_login');
@@ -39,10 +27,8 @@ export default function UserData({ navigation }) {
 				// navigate to LoginPage
 				navigation.navigate('LoginPage');
 			} else {
-				setiduser(json.data.id);
 				setnameuser(json.data.name);
 				setemailuser(json.data.email);
-				setroleuser(json.data.role);
 			}
 			setLoading(false);
 		} catch (error) {

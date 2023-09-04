@@ -12,7 +12,7 @@ export default function Beranda({navigation}) {
       />
       <View style={styles.header}>
         <ImageBackground
-          source={require('./img/home.png')}
+          source={ { uri: 'https://clipground.com/images/baju-png-20.png'} }
           style={styles.imgBg}
           resizeMode="contain"></ImageBackground>
         <View style={styles.textBg}>
@@ -22,13 +22,13 @@ export default function Beranda({navigation}) {
               fontWeight: 'bold',
               color: 'black',
             }}>
-            Cari Kebutuhan Olahraga Kamu di Sini
+            Cari Kebutuhan Outfitmu Disini
           </Text>
           <Text
             style={{
               color: 'black',
             }}>
-            Alat olahraga disini terjamin kualitasnya dan tentunya barangnya
+            semua outfit disini terjamin kualitasnya dan tentunya barangnya
             juga original bukan kw.
           </Text>
         </View>

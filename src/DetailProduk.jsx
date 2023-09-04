@@ -1,20 +1,13 @@
 import {
 	ActivityIndicator,
-	Image,
-	ImageBackground,
-	ScrollView,
-	StatusBar,
-	StyleSheet,
-	TouchableOpacity,
 	View,
 	Alert, ToastAndroid
 } from 'react-native';
-import { Avatar, Button, Card, Divider, Text } from 'react-native-paper';
-import React, { useEffect, useState, useCallback } from 'react';
+import { Button, Card, Divider, Text } from 'react-native-paper';
+import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import API_URL from './config';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DetailProduk({ route, navigation }) {
