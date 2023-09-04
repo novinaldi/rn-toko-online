@@ -14,6 +14,8 @@ import Keranjang from './Keranjang';
 import Checkout from './Checkout';
 import Order from './Order';
 import DetailOrder from './DetailOrder';
+import AddAlamat from './AddAlamat.jsx';
+import LihatInvoice from './LihatInvoice.jsx';
 
 const Stack = createNativeStackNavigator();
 const navOptions = ({ navigation }) => ({
@@ -30,7 +32,8 @@ const navOptions = ({ navigation }) => ({
 		</TouchableOpacity>
 	),
 });
-const navOptionsLoginPage = ({ navigation }) => ({
+
+const backToHome = ({ navigation }) => ({
 	headerStyle: {
 		backgroundColor: '#98EECC',
 	},
@@ -39,8 +42,8 @@ const navOptionsLoginPage = ({ navigation }) => ({
 	},
 	headerTitleAlign: 'center',
 	headerLeft: () => (
-		<TouchableOpacity onPress={() => navigation.goBack()}>
-			<Icon name="arrow-left" color="black" size={20} />
+		<TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+			<Icon name="home" color="black" size={20} />
 		</TouchableOpacity>
 	),
 });
@@ -136,16 +139,7 @@ function Nav() {
 				<Stack.Screen
 					name="LoginPage"
 					component={LoginPage}
-					options={{
-						headerTitle: 'Halaman Login',
-						headerStyle: {
-							backgroundColor: '#98EECC',
-						},
-						headerTitleStyle: {
-							color: '#000',
-						},
-						headerTitleAlign: 'center',
-					}}
+					options={backToHome}
 				/>
 				<Stack.Screen
 					name="RegisterPage"
@@ -173,6 +167,19 @@ function Nav() {
 					component={DetailOrder}
 					options={{
 						headerTitle: 'Detail Order',
+					}}
+				/>
+
+				<Stack.Screen
+					name='Alamat'
+					component={AddAlamat}
+				/>
+				
+				<Stack.Screen
+					name='LihatInvoice'
+					component={LihatInvoice}
+					options={{
+						headerTitle: 'Lihat Invoice',
 					}}
 				/>
 			</Stack.Navigator>

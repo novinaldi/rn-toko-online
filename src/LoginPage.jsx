@@ -9,9 +9,9 @@ import {
 import {
   PaperProvider,
   TextInput,
-  Button,
   MD3LightTheme as DefaultTheme,
   ActivityIndicator,
+  Divider,
 } from 'react-native-paper';
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -127,16 +127,32 @@ export default function LoginPage({navigation}) {
           ) : (
             <View style={{flexDirection: 'row'}}>
               <IconMaterial name="login" color="white" size={26} />
-              <Text
-                style={{
-                  color: '#ffffff',
-                  fontWeight: 'bold',
-                  fontSize: 20,paddingLeft:10
-                }}>
+              <Text style={{color: '#ffffff', fontWeight: 'bold',fontSize: 20,paddingLeft:10}}>
                 Login
               </Text>
             </View>
           )}
+        </TouchableOpacity>
+
+        <Divider />
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#164B60',
+            marginHorizontal: 10,
+            elevation: 3,
+            marginVertical: 20,
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 20,
+          }}
+          onPress={() => navigation.push('RegisterPage')}>
+          <View style={{flexDirection: 'row'}}>
+            <IconMaterial name="account-plus" color="white" size={26} />
+            <Text style={{color: '#ffffff', fontWeight: 'bold',fontSize: 20,paddingLeft:10}}>
+              Register
+            </Text>
+            </View>
         </TouchableOpacity>
       </View>
     </PaperProvider>

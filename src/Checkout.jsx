@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import API_URL from "./config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Toast, View } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 
 export default function Checkout({ route, navigation }) {
 	// state keranjang
@@ -39,18 +39,22 @@ export default function Checkout({ route, navigation }) {
 					navigation.navigate('LoginPage');
 				}
 				
-				console.log(json);
-				setKeranjang(json.data.keranjang);
-				setOngkir(json.data.ongkir);
-				setTotalBelanja(json.data.total_belanja);
-				setInvoice(json.data.invoice);
+				// if json.code is ALAMAT_NOT_FOUND, then set isAlamat to false
+				if (json.code == 'ALAMAT_USER_NOT_FOUND') {
+					ToastAndroid.show('Tambahkan alamat terlebih dahulu', ToastAndroid.LONG);
+					navigation.navigate('Alamat');
+				}
+				setKeranjang(json.data?.keranjang);
+				setOngkir(json.data?.ongkir);
+				setTotalBelanja(json.data?.total_belanja);
+				setInvoice(json.data?.invoice);
 
 				// add invoice to header title
 				navigation.setOptions({
-					title: 'Checkout - ' + json.data.invoice,
+					title: 'Checkout - ' + json.data?.invoice,
 				});
 			})
-			.catch(e => console.log(e));
+			.catch(e => console.error(e));
 	}
 	// get data checkout
 	useFocusEffect(
@@ -86,6 +90,7 @@ export default function Checkout({ route, navigation }) {
 				/>
 			</List.Accordion>
 			<Divider />
+
 			<List.Accordion
 				title="Ongkos Kirim"
 				// description is "Total Ongkir : " + ongkir.biaya
@@ -95,6 +100,7 @@ export default function Checkout({ route, navigation }) {
 				<List.Item title={"Jenis Layanan : " + ongkir?.service} />
 				<List.Item title={"Estimasi : " + ongkir?.etd + " Hari"} />
 			</List.Accordion>
+
 			<Divider />
 			<Text variant="titleMedium">
 				Total Pembayaran : Rp. {(totalBelanja + ongkir?.biaya)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
@@ -114,6 +120,7 @@ export default function Checkout({ route, navigation }) {
 				value={noHp}
 				onChangeText={text => setNoHp(text)}
 				mode="outlined"
+				keyboardType="number-pad"
 			/>
 			<Divider />
 			<Button
@@ -143,7 +150,7 @@ export default function Checkout({ route, navigation }) {
 									json.message,
 									ToastAndroid.LONG,
 								)
-								navigation.navigate('Beranda');
+								navigation.navigate('Order');
 							}
 						})
 						.catch(e => console.log(e));

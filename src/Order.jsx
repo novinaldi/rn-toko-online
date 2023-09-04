@@ -31,7 +31,6 @@ export default function Order({ route, navigation }) {
 					navigation.navigate('LoginPage');
 				}
 				setData(json.data);
-				console.log(json);
 			})
 			.catch((error) => console.error(error));
 	}
@@ -48,29 +47,35 @@ export default function Order({ route, navigation }) {
 			flex: 1,
 			padding: 5,
 		}}>
-			<List.Accordion
-				title="Order Belum Dibayar"
-			>
-				<FlatList
-					data={data}
-					keyExtractor={(item) => item.id}
-					renderItem={({ item }) => (
-						<View>
-							<List.Item
-								title={"Invoice # " + item.invoice}
-								description={"Total: Rp. " + item?.subtotal?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-								// left={props => <List.Icon {...props} icon="cart" />}
-								right={props => <Button {...props} mode="contained" onPress={() => {{
-									navigation.navigate('DetailOrder', {
+			<FlatList
+				data={data}
+				keyExtractor={(item) => item.id}
+				renderItem={({ item }) => (
+					<View>
+						<List.Item
+							title={"Invoice # " + item.invoice}
+							description={"Total: Rp. " + item?.subtotal?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+							// left={props => <List.Icon {...props} icon="cart" />}
+							right={props => {
+								if(item.status_order_id == 1){
+									return (<Button {...props} mode="contained" onPress={() => {{
+										navigation.navigate('DetailOrder', {
+											id: item.id,
+										});
+									}}}>Bayar</Button>);
+								}
+
+								return (<Button {...props} mode="contained" onPress={() => {{
+									navigation.navigate('LihatInvoice', {
 										id: item.id,
 									});
-								}}}>Bayar</Button>}
-							/>
-							<Divider />
-						</View>
-					)}
-				/>
-			</List.Accordion>
+								}}}>Lihat Invoice</Button>);
+							}}
+						/>
+						<Divider />
+					</View>
+				)}
+			/>
 		</SafeAreaView>
 	);
 }
